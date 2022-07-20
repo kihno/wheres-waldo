@@ -1,23 +1,49 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
+import Header from './components/Header';
+import Home from './components/Home';
+import Level from './components/Level';
+import Footer from './components/Footer';
+import levelOne from './images/levelone.jpeg';
+import levelTwo from './images/leveltwo.jpeg';
+import levelThree from './images/levelthree.jpeg';
+import levelFour from './images/levelfour.jpeg';
 
 function App() {
+  const [images, setImage] = useState([]);
+
+  useEffect(() => {
+      const allImages = [
+        {
+          name: 'image one',
+          url: levelOne,
+        },
+        {
+          name: 'image two',
+          url: levelTwo,
+        },
+        {
+          name: 'image three',
+          url: levelThree,
+        },
+        {
+          name: 'image four',
+          url: levelFour,
+        },
+      ]
+
+      setImage(allImages);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Home images={images} />} />
+        <Route path='/levelone' element={<Level />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }
