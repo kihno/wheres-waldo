@@ -15,7 +15,8 @@ function App() {
   const [images, setImage] = useState([]);
   const [view, setView] = useState('home');
   const [characters, setCharacters] = useState([]);
-  const [clock, setClock] = useState({min: '00', sec: '00'});
+  const [gameOver, setGameOver] = useState(false);
+  const [gameTime, setGameTime] = useState({});
 
   const navigate = useNavigate();
 
@@ -51,18 +52,17 @@ function App() {
 
       setImage(allImages);
       setCharacters(waldo);
-      resetTimer();
   }, []);
 
   const startGame = (e) => {
     const name = e.target.name;
     setView(name);
-    setTimer();
   }
   
   const navigateHome = () => {
     navigate('/');
     setView('home');
+    console.log(gameTime);
   }
 
   const getCoordinates = (e) => {
@@ -71,32 +71,6 @@ function App() {
 
     console.log(clickX);
     console.log(clickY);
-  }
-
-  let timerInterval;
-  let second;
-  let minute;
-
-  const setTimer = () => {
-    second = 0;
-    minute = 0;
-    timerInterval = setInterval(() => {
-      let m = minute < 10 ? "0" + minute : minute;
-      let s = second < 10 ? "0" + second : second;
-      setClock({sec: s, min: m});
-      second++;
-      if (second === 60) {
-        second = 0;
-        minute++;
-      }
-    }, 1000)
-  }
-
-  const resetTimer = () => {
-    clearInterval(setTimer);
-    second = 0;
-    minute = 0;
-    // setClock({sec: '00', min: '00'});
   }
 
   return (
@@ -108,13 +82,13 @@ function App() {
           case 'home':
             return <Home images={images}  handleClick={startGame} />
           case 'level one':
-            return <Level image={images[0]} characters={characters} clock={clock} setClock={setClock} handleClick={getCoordinates} />
+            return <Level image={images[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
           case 'level two':
-            return <Level image={images[1]} characters={characters} clock={clock} setClock={setClock} handleClick={getCoordinates} />
+            return <Level image={images[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
           case 'level three':
-            return <Level image={images[2]} characters={characters} clock={clock} setClock={setClock} handleClick={getCoordinates} />
+            return <Level image={images[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
           case 'level four':
-            return <Level image={images[3]} characters={characters} clock={clock} setClock={setClock} handleClick={getCoordinates} />
+            return <Level image={images[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
         }
       })()}
 
