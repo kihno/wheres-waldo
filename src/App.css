@@ -28,3 +28,15 @@ body {
 #gameImage {
   width: 100%;
 }
+
+#gameContainer {
+  margin: 20px;
+}
+
+.charImg {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  object-position: top;
+  overflow: hidden;
+}
