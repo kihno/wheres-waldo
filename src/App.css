@@ -1,3 +1,30 @@
 body {
   margin: 0;
 }
+
+#grid {
+  width: 800px;
+  display: grid;
+  grid: 1fr 1fr / 1fr 1fr;
+}
+
+.imgContainer {
+  width: 400px;
+  height: 400px;
+}
+
+.previewImg {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.previewImg:hover {
+  opacity: 0.5;
+}
+
+#gameImage {
+  width: 100%;
+}

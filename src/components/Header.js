@@ -1,10 +1,11 @@
 import React from 'react';
 
-const Header = () => {
+const Header = (props) => {
+    const { handleClick } = props;
 
     return(
         <div id="header">
-            <h1 id="logo">Where's Waldo?</h1>
+            <h1 id="logo" onClick={handleClick}>Where's Waldo?</h1>
         </div>
     )
 }
