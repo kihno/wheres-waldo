@@ -17,6 +17,9 @@ function App() {
   const [characters, setCharacters] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [gameTime, setGameTime] = useState({});
+  const [topY, setTop] = useState(0);
+  const [leftX, setLeft] = useState(0);
+  const [hidden, setHidden] = useState('none');
 
   const navigate = useNavigate();
 
@@ -69,8 +72,17 @@ function App() {
     const clickX = e.clientX;
     const clickY = e.clientY;
 
-    console.log(clickX);
-    console.log(clickY);
+    
+  }
+
+  const handleImageClick = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const clickX = e.clientX - rect.left - 10;
+    const clickY = e.clientY - rect.top - 10;
+
+    setHidden('flex');
+    setLeft(clickX);
+    setTop(clickY);
   }
 
   return (
@@ -82,13 +94,13 @@ function App() {
           case 'home':
             return <Home images={images}  handleClick={startGame} />
           case 'level one':
-            return <Level image={images[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
+            return <Level image={images[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} hidden={hidden} topY={topY} leftX={leftX} handleClick={handleImageClick} />
           case 'level two':
-            return <Level image={images[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
+            return <Level image={images[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           case 'level three':
-            return <Level image={images[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
+            return <Level image={images[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           case 'level four':
-            return <Level image={images[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={getCoordinates} />
+            return <Level image={images[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
         }
       })()}
 

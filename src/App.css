@@ -27,10 +27,15 @@ body {
 
 #gameImage {
   width: 100%;
+  top: 0;
 }
 
 #gameContainer {
   margin: 20px;
+}
+
+#gameboard {
+  position: relative;
 }
 
 .charImg {
@@ -39,4 +44,29 @@ body {
   object-fit: cover;
   object-position: top;
   overflow: hidden;
+}
+
+#tag {
+  position: absolute;
+}
+
+#targetBox {
+  height: 20px;
+  width: 20px;
+  border: 2px solid red;
+}
+
+#characterList {
+  margin: 0;
+  padding: 0;
+}
+
+.characterTag {
+  list-style: none;
+  margin: 5px;
+}
+
+.characterTag:hover {
+  cursor: pointer;
+  background-color: lightgrey;
 }
