@@ -3,18 +3,19 @@ import Legend from './Legend';
 import Timer from './Timer';
 
 const Level = (props) => {
-    const { image, handleClick, characters, gameTime, setGameTime, hidden, topY, leftX } = props;
+    const { image, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide } = props;
 
     return (
         <div id="gameContainer">
             <Legend characters={characters} />
             <Timer gameTime={gameTime} setGameTime={setGameTime} />
             <div id="gameboard">
-                <div id="tag" style={{display: hidden, top:topY, left:leftX}}>
+                <div id="message" style={{display: messageHide}}>{message}</div>
+                <div id="tag" style={{display: selectHide, top:topY, left:leftX}}>
                     <div id="targetBox"></div>
                     <ul id="characterList">
                         {characters.map(char => {
-                            return <li className="characterTag" key={char.id}>{char.name}</li>
+                            return <li className="characterTag" key={char.id} onClick={handleSelect}>{char.name}</li>
                         })}
                     </ul>
                 </div>

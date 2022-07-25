@@ -19,7 +19,9 @@ function App() {
   const [gameTime, setGameTime] = useState({});
   const [topY, setTop] = useState(0);
   const [leftX, setLeft] = useState(0);
-  const [hidden, setHidden] = useState('none');
+  const [selectHide, setSelectHide] = useState('none');
+  const [messageHide, setMessageHide] = useState('none');
+  const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -68,21 +70,23 @@ function App() {
     console.log(gameTime);
   }
 
-  const getCoordinates = (e) => {
-    const clickX = e.clientX;
-    const clickY = e.clientY;
-
-    
-  }
-
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();
     const clickX = e.clientX - rect.left - 10;
-    const clickY = e.clientY - rect.top - 10;
+    const clickY = e.clientY - rect.top - 15;
 
-    setHidden('flex');
+    setMessageHide('none');
+    setSelectHide('flex');
     setLeft(clickX);
     setTop(clickY);
+  }
+
+  const handleSelect = (e) => {
+    const charName = e.target.textContent;
+
+    setMessageHide('block');
+    setMessage(`Sorry, ${charName[0].toUpperCase() + charName.substring(1)} isn't there. Try Again.`)
+    setSelectHide('none');
   }
 
   return (
@@ -94,13 +98,15 @@ function App() {
           case 'home':
             return <Home images={images}  handleClick={startGame} />
           case 'level one':
-            return <Level image={images[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} hidden={hidden} topY={topY} leftX={leftX} handleClick={handleImageClick} />
+            return <Level image={images[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
           case 'level two':
             return <Level image={images[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           case 'level three':
             return <Level image={images[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           case 'level four':
             return <Level image={images[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+          default:
+            return <Home images={images}  handleClick={startGame} />
         }
       })()}
 
