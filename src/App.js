@@ -22,6 +22,8 @@ function App() {
   const [selectHide, setSelectHide] = useState('none');
   const [messageHide, setMessageHide] = useState('none');
   const [message, setMessage] = useState('');
+  const [clickedLocation, setLocation] = useState([]);
+  const [currentLevel, setCurrentLevel] = useState({});
 
   const navigate = useNavigate();
 
@@ -29,6 +31,11 @@ function App() {
       const allImages = [
         {
           name: 'level one',
+          location: {
+            waldo: [61,38],
+            odlaw: [10, 36],
+            wizard: [27, 36]
+          },
           url: levelOne,
           path: '/level-one'
         },
@@ -52,7 +59,10 @@ function App() {
       const waldo = [{
         name: 'waldo',
         url: waldoIcon,
-        id: 0
+        id: 0,
+        location: {
+          levelOne: [61,38]
+        }
       }]
 
       setImage(allImages);
@@ -62,6 +72,9 @@ function App() {
   const startGame = (e) => {
     const name = e.target.name;
     setView(name);
+
+    const [selectedLevel] = images.filter(level => level.name === name);
+    setCurrentLevel(selectedLevel);
   }
   
   const navigateHome = () => {
@@ -72,21 +85,28 @@ function App() {
 
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();
-    const clickX = e.clientX - rect.left - 10;
-    const clickY = e.clientY - rect.top - 15;
+    const clickX = parseInt((e.pageX - rect.left) / e.target.offsetWidth * 100);
+    const clickY = parseInt((e.clientY - rect.top) / e.target.offsetHeight * 100);
+
+    setLocation([clickX, clickY]);
 
     setMessageHide('none');
     setSelectHide('flex');
-    setLeft(clickX);
-    setTop(clickY);
+    setLeft(`${clickX}%`);
+    setTop(`${clickY}%`);
   }
 
   const handleSelect = (e) => {
     const charName = e.target.textContent;
-
-    setMessageHide('block');
-    setMessage(`Sorry, ${charName[0].toUpperCase() + charName.substring(1)} isn't there. Try Again.`)
-    setSelectHide('none');
+    console.log(currentLevel.location[charName]);
+    if (clickedLocation[0] > currentLevel.location[charName][0] - 3 && clickedLocation[0] < currentLevel.location[charName][0] + 3
+        && clickedLocation[1] > currentLevel.location[charName][1] - 3 && clickedLocation[1] < currentLevel.location[charName][1] + 3) {
+          console.log('you found waldo')
+    } else {
+      setMessageHide('block');
+      setMessage(`Sorry, ${charName[0].toUpperCase() + charName.substring(1)} isn't there. Try again.`)
+      setSelectHide('none');
+    }
   }
 
   return (

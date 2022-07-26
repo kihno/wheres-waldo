@@ -26,8 +26,7 @@ body {
 }
 
 #gameImage {
-  width: 100%;
-  top: 0;
+  height: 100%;
 }
 
 #gameContainer {
@@ -61,11 +60,12 @@ body {
 
 #tag {
   position: absolute;
+  transform: translate(-10%, -40%);
 }
 
 #targetBox {
-  height: 30px;
-  width: 20px;
+  height: 3em;
+  width: 2em;
   border: 2px solid red;
 }
 
