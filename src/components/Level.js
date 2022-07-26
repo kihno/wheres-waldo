@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Legend from './Legend';
 import Timer from './Timer';
+import target from '../images/target.png';
 
 const Level = (props) => {
-    const { image, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide } = props;
+    const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, targetHide } = props;
 
     return (
         <div id="gameContainer">
@@ -19,7 +20,13 @@ const Level = (props) => {
                         })}
                     </ul>
                 </div>
-                <img id="gameImage" src={image.url} onClick={handleClick} alt={image.name}>
+                { characters.map(char => {
+                    const charX = `${levelData.location[char.name][0]}%`;
+                    const charY = `${levelData.location[char.name][1]}%`;
+                    return <img className={"target " + char.name} src={target} alt="X" key={char.id}
+                            style={{left: charX, top: charY, display: targetHide[char.name]}}></img>
+                })}
+                <img id="gameImage" src={levelData.url} onClick={handleClick} alt={levelData.name}>
                 </img>
             </div>
         </div>

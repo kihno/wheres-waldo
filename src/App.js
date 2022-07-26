@@ -12,7 +12,7 @@ import levelFour from './images/level-four.jpg';
 import waldoIcon from './images/waldo.png';
 
 function App() {
-  const [images, setImage] = useState([]);
+  const [levelData, setData] = useState([]);
   const [view, setView] = useState('home');
   const [characters, setCharacters] = useState([]);
   const [gameOver, setGameOver] = useState(false);
@@ -24,11 +24,12 @@ function App() {
   const [message, setMessage] = useState('');
   const [clickedLocation, setLocation] = useState([]);
   const [currentLevel, setCurrentLevel] = useState({});
+  const [targetHide, setTargetHide] = useState({waldo: 'none', odlaw: 'none', wizard: 'none'});
 
   const navigate = useNavigate();
 
   useEffect(() => {
-      const allImages = [
+      const allData = [
         {
           name: 'level one',
           location: {
@@ -65,7 +66,7 @@ function App() {
         }
       }]
 
-      setImage(allImages);
+      setData(allData);
       setCharacters(waldo);
   }, []);
 
@@ -73,7 +74,7 @@ function App() {
     const name = e.target.name;
     setView(name);
 
-    const [selectedLevel] = images.filter(level => level.name === name);
+    const [selectedLevel] = levelData.filter(level => level.name === name);
     setCurrentLevel(selectedLevel);
   }
   
@@ -100,11 +101,14 @@ function App() {
     const charName = e.target.textContent;
     console.log(currentLevel.location[charName]);
     if (clickedLocation[0] > currentLevel.location[charName][0] - 3 && clickedLocation[0] < currentLevel.location[charName][0] + 3
-        && clickedLocation[1] > currentLevel.location[charName][1] - 3 && clickedLocation[1] < currentLevel.location[charName][1] + 3) {
-          console.log('you found waldo')
+      && clickedLocation[1] > currentLevel.location[charName][1] - 3 && clickedLocation[1] < currentLevel.location[charName][1] + 3) {
+        setTargetHide({...targetHide, [charName]: 'block'});
+        setMessageHide('block');
+        setMessage(`You found ${charName[0].toUpperCase() + charName.substring(1)}!`);
+        setSelectHide('none');
     } else {
       setMessageHide('block');
-      setMessage(`Sorry, ${charName[0].toUpperCase() + charName.substring(1)} isn't there. Try again.`)
+      setMessage(`Sorry, ${charName[0].toUpperCase() + charName.substring(1)} isn't there. Try again.`);
       setSelectHide('none');
     }
   }
@@ -116,23 +120,23 @@ function App() {
       {(() => {
         switch (view) {
           case 'home':
-            return <Home images={images}  handleClick={startGame} />
+            return <Home levelData={levelData}  handleClick={startGame} />
           case 'level one':
-            return <Level image={images[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
+            return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} targetHide={targetHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
           case 'level two':
-            return <Level image={images[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           case 'level three':
-            return <Level image={images[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           case 'level four':
-            return <Level image={images[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
           default:
-            return <Home images={images}  handleClick={startGame} />
+            return <Home levelData={levelData}  handleClick={startGame} />
         }
       })()}
 
       {/* <Routes>
         <Route path='/'>
-          <Home images={images}  handleClick={startGame} />
+          <Home levelData={levelData}  handleClick={startGame} />
         </Route>
         <Route path='/level'>
           <Level />

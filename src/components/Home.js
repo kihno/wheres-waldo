@@ -1,14 +1,14 @@
 import React from 'react';
 
 const Home = (props) => {
-    const {images, handleClick} = props;
+    const {levelData, handleClick} = props;
 
     return(
         <div id="start">
             <div id="grid">
-                {images.map(image => {
-                    return <div className="imgContainer" key={images.indexOf(image)}>
-                                <img className="previewImg" onClick={handleClick} name={image.name} src={image.url} alt={image.name}></img>
+                {levelData.map(level => {
+                    return <div className="imgContainer" key={levelData.indexOf(level)}>
+                                <img className="previewImg" onClick={handleClick} name={level.name} src={level.url} alt={level.name}></img>
                             </div>
                 })}
             </div>
