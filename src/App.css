@@ -47,6 +47,14 @@ body {
   overflow: hidden;
 }
 
+.found {
+  opacity: 0.5;
+}
+
+.hide {
+  display: none;
+}
+
 #message {
   background-color: rgb(239, 89, 89);
   color: white;
