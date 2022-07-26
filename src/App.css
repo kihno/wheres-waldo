@@ -61,7 +61,7 @@ body {
 .target {
   width: 30px;
   position: absolute;
-  transform: translate(-20%, -20%);
+  transform: translate(-30%, -30%);
 }
 
 #tag {
@@ -84,8 +84,8 @@ body {
 
 .characterTag {
   list-style: none;
-  padding: 5px;
   text-transform: capitalize ;
+  font-size: 70%;
 }
 
 .characterTag:hover {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Legend from './Legend';
 import Timer from './Timer';
 import target from '../images/target.png';
@@ -20,7 +20,7 @@ const Level = (props) => {
                         })}
                     </ul>
                 </div>
-                { characters.map(char => {
+                {characters.map(char => {
                     const charX = `${levelData.location[char.name][0]}%`;
                     const charY = `${levelData.location[char.name][1]}%`;
                     return <img className={"target " + char.name} src={target} alt="X" key={char.id}

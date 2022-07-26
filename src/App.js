@@ -10,6 +10,9 @@ import levelTwo from './images/level-two.jpg';
 import levelThree from './images/level-three.jpg';
 import levelFour from './images/level-four.jpg';
 import waldoIcon from './images/waldo.png';
+import odlawIcon from './images/odlaw.png';
+import wizardIcon from './images/wizard.png';
+import wendaIcon from './images/wenda.png';
 
 function App() {
   const [levelData, setData] = useState([]);
@@ -24,7 +27,7 @@ function App() {
   const [message, setMessage] = useState('');
   const [clickedLocation, setLocation] = useState([]);
   const [currentLevel, setCurrentLevel] = useState({});
-  const [targetHide, setTargetHide] = useState({waldo: 'none', odlaw: 'none', wizard: 'none'});
+  const [targetHide, setTargetHide] = useState({waldo: 'none', odlaw: 'none', wizard: 'none', wenda: 'none'});
 
   const navigate = useNavigate();
 
@@ -35,23 +38,42 @@ function App() {
           location: {
             waldo: [61,38],
             odlaw: [10, 36],
-            wizard: [27, 36]
+            wizard: [27, 36],
+            wenda: [77, 41],
           },
           url: levelOne,
           path: '/level-one'
         },
         {
           name: 'level two',
+          location: {
+            waldo: [85,73],
+            odlaw: [31, 65],
+            wizard: [6, 76],
+            wenda: [48, 42],
+          },
           url: levelTwo,
           path: '/level-two'
         },
         {
           name: 'level three',
+          location: {
+            waldo: [27, 35],
+            odlaw: [59, 65],
+            wizard: [61, 87],
+            wenda: [25, 73],
+          },
           url: levelThree,
           path: '/level-three'
         },
         {
           name: 'level four',
+          location: {
+            waldo: [40, 63],
+            odlaw: [7, 69],
+            wizard: [78, 58],
+            wenda: [29, 52],
+          },
           url: levelFour,
           path: '/level-four'
         },
@@ -61,13 +83,33 @@ function App() {
         name: 'waldo',
         url: waldoIcon,
         id: 0,
-        location: {
-          levelOne: [61,38]
-        }
       }]
 
+      const allCharacters = [
+        {
+          name: 'waldo',
+          url: waldoIcon,
+          id: 0,
+        },
+        {
+          name: 'odlaw',
+          url: odlawIcon,
+          id: 1,
+        },
+        {
+          name: 'wizard',
+          url: wizardIcon,
+          id: 2,
+        },
+        {
+          name: 'wenda',
+          url: wendaIcon,
+          id: 3,
+        }
+    ]
+
       setData(allData);
-      setCharacters(waldo);
+      setCharacters(allCharacters);
   }, []);
 
   const startGame = (e) => {
@@ -99,14 +141,15 @@ function App() {
 
   const handleSelect = (e) => {
     const charName = e.target.textContent;
-    console.log(currentLevel.location[charName]);
     if (clickedLocation[0] > currentLevel.location[charName][0] - 3 && clickedLocation[0] < currentLevel.location[charName][0] + 3
       && clickedLocation[1] > currentLevel.location[charName][1] - 3 && clickedLocation[1] < currentLevel.location[charName][1] + 3) {
+        console.log(clickedLocation);
         setTargetHide({...targetHide, [charName]: 'block'});
         setMessageHide('block');
         setMessage(`You found ${charName[0].toUpperCase() + charName.substring(1)}!`);
         setSelectHide('none');
     } else {
+      console.log(clickedLocation);
       setMessageHide('block');
       setMessage(`Sorry, ${charName[0].toUpperCase() + charName.substring(1)} isn't there. Try again.`);
       setSelectHide('none');
@@ -124,11 +167,11 @@ function App() {
           case 'level one':
             return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} targetHide={targetHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
           case 'level two':
-            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} targetHide={targetHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
           case 'level three':
-            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} targetHide={targetHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
           case 'level four':
-            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} handleClick={handleImageClick} />
+            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} targetHide={targetHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} />
           default:
             return <Home levelData={levelData}  handleClick={startGame} />
         }
