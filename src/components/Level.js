@@ -5,7 +5,7 @@ import target from '../images/target.png';
 
 const Level = (props) => {
     const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, navigateHome } = props;
-
+    
     return (
         <div id="gameContainer">
             <Legend characters={characters} isFound={isFound} />

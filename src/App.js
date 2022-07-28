@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
+import './toggleSwitch.css';
 import Header from './components/Header';
 import Home from './components/Home';
 import Level from './components/Level';
@@ -28,9 +29,38 @@ function App() {
   const [message, setMessage] = useState('');
   const [clickedLocation, setLocation] = useState([]);
   const [currentLevel, setCurrentLevel] = useState({});
-
+  const [checkbox, setCheckbox] = useState(false);
 
   const navigate = useNavigate();
+
+  const waldo = [{
+    name: 'waldo',
+    url: waldoIcon,
+    id: 0,
+  }]
+
+  const allCharacters = [
+    {
+      name: 'waldo',
+      url: waldoIcon,
+      id: 0,
+    },
+    {
+      name: 'odlaw',
+      url: odlawIcon,
+      id: 1,
+    },
+    {
+      name: 'wizard',
+      url: wizardIcon,
+      id: 2,
+    },
+    {
+      name: 'wenda',
+      url: wendaIcon,
+      id: 3,
+    }
+  ]
 
   useEffect(() => {
       const allData = [
@@ -80,35 +110,6 @@ function App() {
         },
       ]
 
-      const waldo = [{
-        name: 'waldo',
-        url: waldoIcon,
-        id: 0,
-      }]
-
-      const allCharacters = [
-        {
-          name: 'waldo',
-          url: waldoIcon,
-          id: 0,
-        },
-        {
-          name: 'odlaw',
-          url: odlawIcon,
-          id: 1,
-        },
-        {
-          name: 'wizard',
-          url: wizardIcon,
-          id: 2,
-        },
-        {
-          name: 'wenda',
-          url: wendaIcon,
-          id: 3,
-        }
-    ]
-
       setData(allData);
       setCharacters(waldo);
 
@@ -116,8 +117,13 @@ function App() {
 
   useEffect(() => {
     checkGameOver();
-    console.log(characters);
   }, [isFound]);
+
+  useEffect(() => {
+    characters.map(char => {
+      setIsFound(prev => ({...prev, [char.name]: false}));
+    });
+  }, [characters]);
 
   const startGame = (e) => {
     const name = e.target.name;
@@ -125,14 +131,10 @@ function App() {
 
     const [selectedLevel] = levelData.filter(level => level.name === name);
     setCurrentLevel(selectedLevel);
-
-    const characterList = [];
+    
+ 
     characters.map(char => {
-      characterList.push(char.name);
-    });
-
-    characters.map(char => {
-      setIsFound({...isFound, [char.name]: false});
+      setIsFound(isFound => ({...isFound, [char.name]: false}));
     });
 
     setGameOver(false);
@@ -143,6 +145,16 @@ function App() {
   const navigateHome = () => {
     navigate('/');
     setView('home');
+  }
+
+  const toggleMode = () => {
+    if (characters.length === 1) {
+      setCharacters(allCharacters);
+      setCheckbox(true);
+    } else {
+      setCharacters(waldo);
+      setCheckbox(false);
+    }
   }
 
   const handleImageClick = (e) => {
@@ -186,7 +198,7 @@ function App() {
       {(() => {
         switch (view) {
           case 'home':
-            return <Home levelData={levelData}  handleClick={startGame} />
+            return <Home levelData={levelData}  handleClick={startGame} toggleMode={toggleMode} checkbox={checkbox} />
           case 'level one':
             return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
           case 'level two':
