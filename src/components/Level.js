@@ -4,7 +4,7 @@ import Timer from './Timer';
 import target from '../images/target.png';
 
 const Level = (props) => {
-    const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, navigateHome } = props;
+    const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, viewLeaderboard, returnHome, name, handleInput } = props;
     
     return (
         <div id="gameContainer">
@@ -14,8 +14,13 @@ const Level = (props) => {
                 <div id="message" style={{display: messageHide}}>{message}</div>
                 <div id="endGame" className={gameOver ? null : "hide"}>
                     <h2 className="endTitle">You Found Waldo!</h2>
-                    <div className="endTime">{gameTime.min + ":" + gameTime.sec}</div>
-                    <button className="endButton" onClick={navigateHome}>Play Again?</button>
+                    <div className="endTime">{"Your Time: " + gameTime.min + ":" + gameTime.sec}</div>
+                    <p>You made the leaderboard!</p>
+                    <label className="timeInputLabel">Enter Your Name:
+                        <input type="text" value={name} onChange={handleInput}></input>
+                    </label>
+                    <button className="leaderboardButton" onClick={viewLeaderboard}>View Leaderboard</button>
+                    <button className="endButton" onClick={returnHome}>Keep Playing</button>
                 </div>
                 <div id="tag" style={{display: selectHide, top:topY, left:leftX}}>
                     <div id="targetBox"></div>

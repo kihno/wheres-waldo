@@ -1,17 +1,17 @@
 import React from 'react';
 
 const Home = (props) => {
-    const {levelData, handleClick, toggleMode, checkbox } = props;
+    const {levelData, handleClick, toggleMode, checkbox, waldoMode, challengeMode } = props;
 
     return(
         <div id="start">
             <div id="toggleMode">
-                <span className="waldoMode">Waldo Mode</span>
+                <span className="mode" onClick={waldoMode}>Waldo Mode</span>
                 <label className="switch">
-                    <input type="checkbox" onClick={toggleMode} checked={checkbox}></input>
+                    <input type="checkbox" checked={checkbox} onChange={toggleMode}></input>
                     <span className="slider round"></span>
                 </label>
-                <span className="challengeMode">Challenge Mode</span>
+                <span className="mode" onClick={challengeMode}>Challenge Mode</span>
             </div>
             
             <div id="grid">

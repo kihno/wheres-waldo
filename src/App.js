@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import uniqid from 'uniqid';
 import './App.css';
 import './toggleSwitch.css';
 import Header from './components/Header';
 import Home from './components/Home';
 import Level from './components/Level';
+import Leaderboard from './components/Leadboard';
 import Footer from './components/Footer';
 import levelOne from './images/level-one.jpg';
 import levelTwo from './images/level-two.jpg';
@@ -30,6 +32,10 @@ function App() {
   const [clickedLocation, setLocation] = useState([]);
   const [currentLevel, setCurrentLevel] = useState({});
   const [checkbox, setCheckbox] = useState(false);
+  const [name, setName] = useState('');
+  const [leaderboard, setLeaderboard] = useState([[], []]);
+  // const [waldoLeaderboard, setWaldoLeaderboard] = useState([]);
+  // const [challengeLeaderboard, setChallengeLeaderboard] = useState([]);
 
   const navigate = useNavigate();
 
@@ -120,9 +126,11 @@ function App() {
   }, [isFound]);
 
   useEffect(() => {
+    const updateFound = {};
     characters.map(char => {
-      setIsFound(prev => ({...prev, [char.name]: false}));
+      updateFound[char.name] = false;
     });
+    setIsFound(updateFound)
   }, [characters]);
 
   const startGame = (e) => {
@@ -143,8 +151,22 @@ function App() {
   }
   
   const navigateHome = () => {
-    navigate('/');
+    // navigate('/');
     setView('home');
+  }
+
+  const returnHome = () => {
+    addToLeaderboard();
+    navigateHome();
+  }
+
+  const navigateLeaderboard = () => {
+    setView('leaderboard');
+  }
+
+  const viewLeaderboard = () => {
+    addToLeaderboard();
+    navigateLeaderboard();
   }
 
   const toggleMode = () => {
@@ -155,6 +177,16 @@ function App() {
       setCharacters(waldo);
       setCheckbox(false);
     }
+  }
+
+  const waldoMode = () => {
+    setCharacters(waldo);
+    setCheckbox(false);
+  }
+
+  const challengeMode = () => {
+      setCharacters(allCharacters);
+      setCheckbox(true);
   }
 
   const handleImageClick = (e) => {
@@ -185,28 +217,56 @@ function App() {
     }
   }
 
+  const handleNameInput = (e) => {
+    const value = e.target.value;
+
+    setName(value);
+  }
+
   const checkGameOver = () => {
     if (Object.values(isFound).every(value => value === true)) {
       setGameOver(true);
     }
   }
 
+  const addToLeaderboard = () => {
+    const entry = {
+      name: name,
+      time: gameTime,
+      level: currentLevel.name,
+      id: uniqid(),
+    }
+
+    if (checkbox === false) {
+      let updateBoard = [...leaderboard];
+      updateBoard[0].push(entry);
+      setLeaderboard(updateBoard);
+    } else {
+      let updateBoard = [...leaderboard];
+      updateBoard[1].push(entry);
+      setLeaderboard(updateBoard);
+    }
+    console.log(leaderboard);
+  }
+
   return (
     <div className="App">
-      <Header handleClick={navigateHome} />
+      <Header handleHomeClick={navigateHome} handleLeaderboardClick={navigateLeaderboard} />
 
       {(() => {
         switch (view) {
           case 'home':
-            return <Home levelData={levelData}  handleClick={startGame} toggleMode={toggleMode} checkbox={checkbox} />
+            return <Home levelData={levelData}  handleClick={startGame} toggleMode={toggleMode} checkbox={checkbox} waldoMode={waldoMode} challengeMode={challengeMode} />
+          case 'leaderboard':
+            return <Leaderboard leaderboard={leaderboard} />
           case 'level one':
-            return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
+            return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} returnHome={returnHome} name={name} handleInput={handleNameInput} viewLeaderboard={viewLeaderboard} />
           case 'level two':
-            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
+            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} returnHome={returnHome} name={name} handleInput={handleNameInput} viewLeaderboard={viewLeaderboard} />
           case 'level three':
-            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
+            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} returnHome={returnHome} name={name} handleInput={handleNameInput} viewLeaderboard={viewLeaderboard} />
           case 'level four':
-            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
+            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} returnHome={returnHome} name={name} handleInput={handleNameInput} viewLeaderboard={viewLeaderboard} />
           default:
             return <Home levelData={levelData}  handleClick={startGame} />
         }
