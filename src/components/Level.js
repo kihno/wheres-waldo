@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Legend from './Legend';
 import Timer from './Timer';
 import target from '../images/target.png';
@@ -6,7 +6,7 @@ import target from '../images/target.png';
 const Level = (props) => {
     const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, viewLeaderboard, returnHome, name, handleInput } = props;
     
-    return (
+    return(
         <div id="gameContainer">
             <Legend characters={characters} isFound={isFound} />
             {gameOver ? gameTime.min + ":" + gameTime.sec : <Timer gameTime={gameTime} setGameTime={setGameTime} />}

@@ -3,7 +3,7 @@ import React from "react";
 const Leaderboard = (props) => {
     const { leaderboard } = props;
 
-    return (
+    return(
         <div id="leaderboard">
             <div id="waldoLeaderboard">
                 <h2>Waldo Leaderboard</h2>

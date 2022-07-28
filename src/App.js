@@ -34,8 +34,6 @@ function App() {
   const [checkbox, setCheckbox] = useState(false);
   const [name, setName] = useState('');
   const [leaderboard, setLeaderboard] = useState([[], []]);
-  // const [waldoLeaderboard, setWaldoLeaderboard] = useState([]);
-  // const [challengeLeaderboard, setChallengeLeaderboard] = useState([]);
 
   const navigate = useNavigate();
 
@@ -237,16 +235,28 @@ function App() {
       id: uniqid(),
     }
 
+    let updateBoard = [...leaderboard];
+
     if (checkbox === false) {
-      let updateBoard = [...leaderboard];
+      updateBoard[0].map(leader => {
+        if (leader.name === entry.name) {
+          entry.name = entry.name + '-' + uniqid();
+        }
+      });
+
       updateBoard[0].push(entry);
       setLeaderboard(updateBoard);
     } else {
-      let updateBoard = [...leaderboard];
+      updateBoard[1].map(leader => {
+        if (leader.name === entry.name) {
+          entry.name = entry.name + '-' + uniqid();
+        }
+      });
+
       updateBoard[1].push(entry);
       setLeaderboard(updateBoard);
     }
-    console.log(leaderboard);
+    setName('');
   }
 
   return (

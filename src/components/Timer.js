@@ -22,11 +22,8 @@ const Timer = (props) => {
         }, 1000);
         
         return () => clearInterval(timerInterval);
-        
     }, []);
-
     
-
     return(
         <div id="timer">
             <div id="click">{clock.min}:{clock.sec}</div>
