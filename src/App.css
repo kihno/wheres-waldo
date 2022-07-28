@@ -83,6 +83,12 @@ body {
   border: 2px solid red;
 }
 
+#endGame {
+  position: absolute;
+  background-color: white;
+  border-radius: 20px;
+}
+
 #characterList {
   margin: 0;
   padding: 0;

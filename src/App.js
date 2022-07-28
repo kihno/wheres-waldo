@@ -110,12 +110,13 @@ function App() {
     ]
 
       setData(allData);
-      setCharacters(allCharacters);
-      
+      setCharacters(waldo);
+
   }, []);
 
   useEffect(() => {
     checkGameOver();
+    console.log(characters);
   }, [isFound]);
 
   const startGame = (e) => {
@@ -130,16 +131,18 @@ function App() {
       characterList.push(char.name);
     });
 
+    characters.map(char => {
+      setIsFound({...isFound, [char.name]: false});
+    });
+
     setGameOver(false);
     setMessageHide('none');
     setSelectHide('none');
-    setIsFound({waldo: false, odlaw: false, wizard: false, wenda: false});
   }
   
   const navigateHome = () => {
     navigate('/');
     setView('home');
-    console.log(gameTime);
   }
 
   const handleImageClick = (e) => {
@@ -185,13 +188,13 @@ function App() {
           case 'home':
             return <Home levelData={levelData}  handleClick={startGame} />
           case 'level one':
-            return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} />
+            return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
           case 'level two':
-            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} />
+            return <Level levelData={levelData[1]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
           case 'level three':
-            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} />
+            return <Level levelData={levelData[2]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
           case 'level four':
-            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} />
+            return <Level levelData={levelData[3]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} navigateHome={navigateHome} />
           default:
             return <Home levelData={levelData}  handleClick={startGame} />
         }
