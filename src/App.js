@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import db from './utils/firebase';
+import { getFirestore, collection, addDoc, getDoc, doc, getDocs, query, orderBy, } from 'firebase/firestore';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import uniqid from 'uniqid';
 import './App.css';
@@ -66,57 +68,74 @@ function App() {
     }
   ]
 
+  async function saveLevels(level) {
+    try {
+      await addDoc(collection(getFirestore(), 'levels'), {
+      
+          name: level.name,
+          location: level.location,
+          url: level.url,
+          path: level.path
+        
+      });
+    }
+    catch(error) {
+      console.error('error writing levels to Firebase Database', error);
+    }
+  }
+
   useEffect(() => {
-      const allData = [
-        {
-          name: 'level one',
-          location: {
-            waldo: [61,38],
-            odlaw: [10, 36],
-            wizard: [27, 36],
-            wenda: [77, 41],
-          },
-          url: levelOne,
-          path: '/level-one'
-        },
-        {
-          name: 'level two',
-          location: {
-            waldo: [85,73],
-            odlaw: [31, 65],
-            wizard: [6, 76],
-            wenda: [48, 42],
-          },
-          url: levelTwo,
-          path: '/level-two'
-        },
-        {
-          name: 'level three',
-          location: {
-            waldo: [27, 35],
-            odlaw: [59, 65],
-            wizard: [61, 87],
-            wenda: [25, 73],
-          },
-          url: levelThree,
-          path: '/level-three'
-        },
-        {
-          name: 'level four',
-          location: {
-            waldo: [40, 63],
-            odlaw: [7, 69],
-            wizard: [78, 58],
-            wenda: [29, 52],
-          },
-          url: levelFour,
-          path: '/level-four'
-        },
-      ]
+      // const allData = [
+      //   {
+      //     name: 'level one',
+      //     location: {
+      //       waldo: [61,38],
+      //       odlaw: [10, 36],
+      //       wizard: [27, 36],
+      //       wenda: [77, 41],
+      //     },
+      //     url: levelOne,
+      //     path: '/level-one'
+      //   },
+      //   {
+      //     name: 'level two',
+      //     location: {
+      //       waldo: [85,73],
+      //       odlaw: [31, 65],
+      //       wizard: [6, 76],
+      //       wenda: [48, 42],
+      //     },
+      //     url: levelTwo,
+      //     path: '/level-two'
+      //   },
+      //   {
+      //     name: 'level three',
+      //     location: {
+      //       waldo: [27, 35],
+      //       odlaw: [59, 65],
+      //       wizard: [61, 87],
+      //       wenda: [25, 73],
+      //     },
+      //     url: levelThree,
+      //     path: '/level-three'
+      //   },
+      //   {
+      //     name: 'level four',
+      //     location: {
+      //       waldo: [40, 63],
+      //       odlaw: [7, 69],
+      //       wizard: [78, 58],
+      //       wenda: [29, 52],
+      //     },
+      //     url: levelFour,
+      //     path: '/level-four'
+      //   },
+      // ]
 
-      setData(allData);
+      // setData(allData);
       setCharacters(waldo);
-
+      loadLevel('P8PmCFx515toV7gUrApy');
+      getLevelData();
   }, []);
 
   useEffect(() => {
@@ -130,6 +149,23 @@ function App() {
     });
     setIsFound(updateFound)
   }, [characters]);
+
+  const getLevelData = async() => {
+    
+    const querySnapshot = await getDocs(query(collection(db, 'levels'), orderBy('sort')));
+    const allLevels = [];
+    querySnapshot.forEach((doc) => {
+      allLevels.push(doc.data());
+    });
+    setData(allLevels);
+  }
+
+  const loadLevel = async (level) => {
+    const docRef = doc(db, 'levels', level);
+    const docSnap = await getDoc(docRef);
+
+    return docSnap.data();
+  }
 
   const startGame = (e) => {
     const name = e.target.name;
