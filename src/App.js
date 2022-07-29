@@ -10,14 +10,6 @@ import Home from './components/Home';
 import Level from './components/Level';
 import Leaderboard from './components/Leadboard';
 import Footer from './components/Footer';
-import levelOne from './images/level-one.jpg';
-import levelTwo from './images/level-two.jpg';
-import levelThree from './images/level-three.jpg';
-import levelFour from './images/level-four.jpg';
-import waldoIcon from './images/waldo.png';
-import odlawIcon from './images/odlaw.png';
-import wizardIcon from './images/wizard.png';
-import wendaIcon from './images/wenda.png';
 
 function App() {
   const [levelData, setData] = useState([]);
@@ -39,102 +31,8 @@ function App() {
 
   const navigate = useNavigate();
 
-  const waldo = [{
-    name: 'waldo',
-    url: waldoIcon,
-    id: 0,
-  }]
-
-  const allCharacters = [
-    {
-      name: 'waldo',
-      url: waldoIcon,
-      id: 0,
-    },
-    {
-      name: 'odlaw',
-      url: odlawIcon,
-      id: 1,
-    },
-    {
-      name: 'wizard',
-      url: wizardIcon,
-      id: 2,
-    },
-    {
-      name: 'wenda',
-      url: wendaIcon,
-      id: 3,
-    }
-  ]
-
-  async function saveLevels(level) {
-    try {
-      await addDoc(collection(getFirestore(), 'levels'), {
-      
-          name: level.name,
-          location: level.location,
-          url: level.url,
-          path: level.path
-        
-      });
-    }
-    catch(error) {
-      console.error('error writing levels to Firebase Database', error);
-    }
-  }
-
   useEffect(() => {
-      // const allData = [
-      //   {
-      //     name: 'level one',
-      //     location: {
-      //       waldo: [61,38],
-      //       odlaw: [10, 36],
-      //       wizard: [27, 36],
-      //       wenda: [77, 41],
-      //     },
-      //     url: levelOne,
-      //     path: '/level-one'
-      //   },
-      //   {
-      //     name: 'level two',
-      //     location: {
-      //       waldo: [85,73],
-      //       odlaw: [31, 65],
-      //       wizard: [6, 76],
-      //       wenda: [48, 42],
-      //     },
-      //     url: levelTwo,
-      //     path: '/level-two'
-      //   },
-      //   {
-      //     name: 'level three',
-      //     location: {
-      //       waldo: [27, 35],
-      //       odlaw: [59, 65],
-      //       wizard: [61, 87],
-      //       wenda: [25, 73],
-      //     },
-      //     url: levelThree,
-      //     path: '/level-three'
-      //   },
-      //   {
-      //     name: 'level four',
-      //     location: {
-      //       waldo: [40, 63],
-      //       odlaw: [7, 69],
-      //       wizard: [78, 58],
-      //       wenda: [29, 52],
-      //     },
-      //     url: levelFour,
-      //     path: '/level-four'
-      //   },
-      // ]
-
-      // setData(allData);
-      setCharacters(waldo);
-      loadLevel('P8PmCFx515toV7gUrApy');
+      getCharacters('waldoMode');
       getLevelData();
   }, []);
 
@@ -151,7 +49,6 @@ function App() {
   }, [characters]);
 
   const getLevelData = async() => {
-    
     const querySnapshot = await getDocs(query(collection(db, 'levels'), orderBy('sort')));
     const allLevels = [];
     querySnapshot.forEach((doc) => {
@@ -160,11 +57,13 @@ function App() {
     setData(allLevels);
   }
 
-  const loadLevel = async (level) => {
-    const docRef = doc(db, 'levels', level);
-    const docSnap = await getDoc(docRef);
-
-    return docSnap.data();
+  const getCharacters = async (mode) => {
+    const querySnapshot = await getDocs(query(collection(db, mode), orderBy('sort')));
+    const allCharacters = [];
+    querySnapshot.forEach((doc) => {
+      allCharacters.push(doc.data());
+    });
+    setCharacters(allCharacters);
   }
 
   const startGame = (e) => {
@@ -173,7 +72,6 @@ function App() {
 
     const [selectedLevel] = levelData.filter(level => level.name === name);
     setCurrentLevel(selectedLevel);
-    
  
     characters.map(char => {
       setIsFound(isFound => ({...isFound, [char.name]: false}));
@@ -205,21 +103,21 @@ function App() {
 
   const toggleMode = () => {
     if (characters.length === 1) {
-      setCharacters(allCharacters);
+      getCharacters('challengeMode');
       setCheckbox(true);
     } else {
-      setCharacters(waldo);
+      getCharacters('waldoMode');
       setCheckbox(false);
     }
   }
 
   const waldoMode = () => {
-    setCharacters(waldo);
+    getCharacters('waldoMode');
     setCheckbox(false);
   }
 
   const challengeMode = () => {
-      setCharacters(allCharacters);
+      getCharacters('challengeMode');
       setCheckbox(true);
   }
 
@@ -269,6 +167,11 @@ function App() {
       time: gameTime,
       level: currentLevel.name,
       id: uniqid(),
+    }
+
+    if (entry.name === '') {
+      entry.name = 'anonymous-' + uniqid();
+      console.log(entry.name);
     }
 
     let updateBoard = [...leaderboard];
