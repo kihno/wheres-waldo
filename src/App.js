@@ -28,12 +28,15 @@ function App() {
   const [checkbox, setCheckbox] = useState(false);
   const [name, setName] = useState('');
   const [leaderboard, setLeaderboard] = useState([[], []]);
+  const [sessionID, setSessionID] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
       getCharacters('waldoMode');
       getLevelData();
+
+      getID();
   }, []);
 
   useEffect(() => {
@@ -47,6 +50,17 @@ function App() {
     });
     setIsFound(updateFound)
   }, [characters]);
+
+  const getID = () => {
+    if (localStorage.getItem('sessionID') !== null) {
+      setSessionID(localStorage.getItem('sessionID'));
+      console.log(sessionID);
+    } else {
+      setSessionID(uniqid());
+      localStorage.setItem('sessionID', sessionID);
+      console.log(sessionID);
+    }
+  }
 
   const getLevelData = async() => {
     const querySnapshot = await getDocs(query(collection(db, 'levels'), orderBy('sort')));
@@ -170,16 +184,15 @@ function App() {
     }
 
     if (entry.name === '') {
-      entry.name = 'anonymous-' + uniqid();
-      console.log(entry.name);
+      entry.name = 'anonymous-' + sessionID;
     }
 
     let updateBoard = [...leaderboard];
 
     if (checkbox === false) {
       updateBoard[0].map(leader => {
-        if (leader.name === entry.name) {
-          entry.name = entry.name + '-' + uniqid();
+        if (leader.name === entry.name && !leader.name.includes(sessionID)) {
+          entry.name = entry.name + '-' + sessionID;
         }
       });
 
@@ -187,8 +200,8 @@ function App() {
       setLeaderboard(updateBoard);
     } else {
       updateBoard[1].map(leader => {
-        if (leader.name === entry.name) {
-          entry.name = entry.name + '-' + uniqid();
+        if (leader.name === entry.name && !leader.name.includes(sessionID)) {
+          entry.name = entry.name + '-' + sessionID;
         }
       });
 
