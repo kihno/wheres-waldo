@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import db from './utils/firebase';
-import { getFirestore, collection, addDoc, getDoc, doc, getDocs, query, orderBy, } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDoc, doc, getDocs, query, orderBy, setDoc, } from 'firebase/firestore';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import uniqid from 'uniqid';
 import './App.css';
@@ -27,7 +27,7 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState({});
   const [checkbox, setCheckbox] = useState(false);
   const [name, setName] = useState('');
-  const [leaderboard, setLeaderboard] = useState([[], []]);
+  const [leaderboard, setLeaderboard] = useState({waldoBoard:[], challengeBoard:[]});
   const [sessionID, setSessionID] = useState('');
 
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ function App() {
   useEffect(() => {
       getCharacters('waldoMode');
       getLevelData();
+      getLeaderBoard();
 
       getID();
   }, []);
@@ -52,7 +53,7 @@ function App() {
   }, [characters]);
 
   const getID = () => {
-    if (localStorage.getItem('sessionID') !== null) {
+    if (localStorage.getItem('sessionID') !== '') {
       setSessionID(localStorage.getItem('sessionID'));
       console.log(sessionID);
     } else {
@@ -78,6 +79,11 @@ function App() {
       allCharacters.push(doc.data());
     });
     setCharacters(allCharacters);
+  }
+
+  const getLeaderBoard = async () => {
+    const querySnapsot = await getDocs(query(collection(db, 'leaderboard')));
+
   }
 
   const startGame = (e) => {
@@ -175,7 +181,7 @@ function App() {
     }
   }
 
-  const addToLeaderboard = () => {
+  const addToLeaderboard = async () => {
     const entry = {
       name: name,
       time: gameTime,
@@ -187,30 +193,45 @@ function App() {
       entry.name = 'anonymous-' + sessionID;
     }
 
-    let updateBoard = [...leaderboard];
+    let updateBoard = {...leaderboard};
 
     if (checkbox === false) {
-      updateBoard[0].map(leader => {
+      updateBoard.waldoBoard.map(leader => {
         if (leader.name === entry.name && !leader.name.includes(sessionID)) {
           entry.name = entry.name + '-' + sessionID;
         }
       });
 
-      updateBoard[0].push(entry);
+      updateBoard.waldoBoard.push(entry);
       setLeaderboard(updateBoard);
+
+      await setDoc(doc(db, 'leaderboard', 'waldoMode'), leaderboard.waldoBoard);
     } else {
-      updateBoard[1].map(leader => {
+      updateBoard.challengeBoard.map(leader => {
         if (leader.name === entry.name && !leader.name.includes(sessionID)) {
           entry.name = entry.name + '-' + sessionID;
         }
       });
 
-      updateBoard[1].push(entry);
+      updateBoard.challengeBoard.push(entry);
       setLeaderboard(updateBoard);
+
+      await setDoc(doc(db, 'leaderboard', 'challengeMode'), leaderboard.challengeBoard);
     }
+
     setName('');
   }
 
+  const updateLeaderboard = async (mode) => {
+    try {
+      await setDoc(collection(db, 'leaderboard', mode), leaderboard);
+      console.log(leaderboard);
+    }
+    catch(error) {
+      console.error('Error updating leaderboard to Firebase Database', error);
+    }
+
+ }
   return (
     <div className="App">
       <Header handleHomeClick={navigateHome} handleLeaderboardClick={navigateLeaderboard} />
@@ -220,7 +241,7 @@ function App() {
           case 'home':
             return <Home levelData={levelData}  handleClick={startGame} toggleMode={toggleMode} checkbox={checkbox} waldoMode={waldoMode} challengeMode={challengeMode} />
           case 'leaderboard':
-            return <Leaderboard leaderboard={leaderboard} />
+            return <Leaderboard leaderboard={leaderboard} setLeaderboard={setLeaderboard} />
           case 'level one':
             return <Level levelData={levelData[0]} characters={characters} gameTime={gameTime} setGameTime={setGameTime} selectHide={selectHide} messageHide={messageHide} topY={topY} leftX={leftX} message={message} handleSelect={handleSelect} handleClick={handleImageClick} isFound={isFound} gameOver={gameOver} returnHome={returnHome} name={name} handleInput={handleNameInput} viewLeaderboard={viewLeaderboard} />
           case 'level two':

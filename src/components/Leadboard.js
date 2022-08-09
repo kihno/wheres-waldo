@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
+import db from '../utils/firebase';
+import { collection, getDocs, query, orderBy, } from 'firebase/firestore';
+
 
 const Leaderboard = (props) => {
-    const { leaderboard } = props;
+    const { leaderboard, setLeaderboard } = props;
+
+    useEffect(() => {
+        getLeaderboard();
+    }, []);
+
+    const getLeaderboard = async() => {
+        const querySnapshot = await getDocs(query(collection(db, 'leaderboard'), orderBy('time')));
+        querySnapshot.forEach((doc) => {
+          leaderboard.push(doc.data());
+        });
+        setLeaderboard(leaderboard);
+    }
 
     return(
         <div id="leaderboard">
             <div id="waldoLeaderboard">
                 <h2>Waldo Leaderboard</h2>
-                {leaderboard[0].map(entry => {
+                {leaderboard.waldoBoard.map(entry => {
                     return <div className="entry" key={entry.id}>
                         <div className="gameTime">{entry.time.min + ":" + entry.time.sec}</div>
                         <div className="gameLevel">{entry.level}</div>
@@ -17,7 +32,7 @@ const Leaderboard = (props) => {
             </div>
             <div id="challengeLeaderboard">
                 <h2>Challenge Leaderboard</h2>
-                {leaderboard[1].map(entry => {
+                {leaderboard.challengeBoard.map(entry => {
                     return <div className="entry" key={entry.id}>
                         <div className="gameTime">{entry.time.min + ":" + entry.time.sec}</div>
                         <div className="gameLevel">{entry.level}</div>
