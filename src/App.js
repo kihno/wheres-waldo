@@ -27,7 +27,7 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState({});
   const [checkbox, setCheckbox] = useState(false);
   const [name, setName] = useState('');
-  const [leaderboard, setLeaderboard] = useState({waldoBoard:[], challengeBoard:[]});
+  const [leaderboard, setLeaderboard] = useState({});
   const [sessionID, setSessionID] = useState('');
 
   const navigate = useNavigate();
@@ -83,7 +83,10 @@ function App() {
 
   const getLeaderBoard = async () => {
     const querySnapsot = await getDocs(query(collection(db, 'leaderboard')));
-
+    querySnapsot.forEach((doc) => {
+      setLeaderboard(leaderboard => ({...leaderboard, ...doc.data()}));
+    });
+    console.log(leaderboard);
   }
 
   const startGame = (e) => {
@@ -196,25 +199,39 @@ function App() {
     let updateBoard = {...leaderboard};
 
     if (checkbox === false) {
-      updateBoard.waldoBoard.map(leader => {
-        if (leader.name === entry.name && !leader.name.includes(sessionID)) {
-          entry.name = entry.name + '-' + sessionID;
+      for (let key in leaderboard.waldoMode) {
+        if (entry.level.split(" ").join("") === key.toString().toLowerCase()) {
+          updateBoard.waldoMode.key.push(entry);
+          setLeaderboard(updateBoard);
         }
-      });
+      }
+      // if (entry.level === leaderboard.waldoMode)
+      // updateBoard.waldoBoard.map(leader => {
+      //   if (leader.name === entry.name && !leader.name.includes(sessionID)) {
+      //     entry.name = entry.name + '-' + sessionID;
+      //   }
+      // });
 
-      updateBoard.waldoBoard.push(entry);
-      setLeaderboard(updateBoard);
+      // updateBoard.waldoBoard.push(entry);
+      // setLeaderboard(updateBoard);
 
       await setDoc(doc(db, 'leaderboard', 'waldoMode'), leaderboard.waldoBoard);
     } else {
-      updateBoard.challengeBoard.map(leader => {
-        if (leader.name === entry.name && !leader.name.includes(sessionID)) {
-          entry.name = entry.name + '-' + sessionID;
+      for (let key in leaderboard.challengeMode) {
+        if (entry.level.split(" ").join("") === key.toString().toLowerCase()) {
+          updateBoard.challengeMode.key.push(entry);
+          setLeaderboard(updateBoard);
         }
-      });
+      }
 
-      updateBoard.challengeBoard.push(entry);
-      setLeaderboard(updateBoard);
+      // updateBoard.challengeBoard.map(leader => {
+      //   if (leader.name === entry.name && !leader.name.includes(sessionID)) {
+      //     entry.name = entry.name + '-' + sessionID;
+      //   }
+      // });
+
+      // updateBoard.challengeBoard.push(entry);
+      // setLeaderboard(updateBoard);
 
       await setDoc(doc(db, 'leaderboard', 'challengeMode'), leaderboard.challengeBoard);
     }

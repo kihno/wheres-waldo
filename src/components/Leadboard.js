@@ -22,15 +22,18 @@ const Leaderboard = (props) => {
         <div id="leaderboard">
             <div id="waldoLeaderboard">
                 <h2>Waldo Leaderboard</h2>
-                {leaderboard.waldoBoard.map(entry => {
+                    <div id='waldoLevelOne'>
+                        <h3>Level One</h3>
+                        {leaderboard.waldoMode.levelOne.map(entry => {
                     return <div className="entry" key={entry.id}>
-                        <div className="gameTime">{entry.time.min + ":" + entry.time.sec}</div>
-                        <div className="gameLevel">{entry.level}</div>
-                        <div className="gameName">{entry.name}</div>
+                            <div className="gameTime">{entry.time.min + ":" + entry.time.sec}</div>
+                            <div className="gameLevel">{entry.level}</div>
+                            <div className="gameName">{entry.name}</div>
+                        </div>
+                    })}
                     </div>
-                })}
             </div>
-            <div id="challengeLeaderboard">
+            {/* <div id="challengeLeaderboard">
                 <h2>Challenge Leaderboard</h2>
                 {leaderboard.challengeBoard.map(entry => {
                     return <div className="entry" key={entry.id}>
@@ -39,7 +42,7 @@ const Leaderboard = (props) => {
                         <div className="gameName">{entry.name}</div>
                     </div>
                 })}
-            </div>
+            </div> */}
             
         </div>
     )
