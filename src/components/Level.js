@@ -2,9 +2,10 @@ import React from 'react';
 import Legend from './Legend';
 import Timer from './Timer';
 import target from '../images/target.png';
+import back from '../images/back-icon.png';
 
 const Level = (props) => {
-    const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, viewLeaderboard, returnHome, name, handleInput } = props;
+    const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, viewLeaderboard, returnHome, name, handleInput, handleHomeClick } = props;
     
     return(
         <div id="gameContainer">
@@ -38,6 +39,9 @@ const Level = (props) => {
                 })}
                 <img id="gameImage" src={levelData.url} onClick={gameOver ? null : handleClick} alt={levelData.name}></img>
             </div>
+            <button id="backButton" onClick={handleHomeClick}>
+                <img src={back} alt="Back" className="backIcon"></img>
+            </button>
         </div>
     )
 }

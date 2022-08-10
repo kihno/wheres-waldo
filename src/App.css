@@ -110,3 +110,16 @@ body {
   cursor: pointer;
   background-color: lightgrey;
 }
+
+#backButton {
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  background-color: #ED2724;
+  width: 70px;
+  height: 45px;
+}
+
+.backIcon {
+  width: 50px;
+}
