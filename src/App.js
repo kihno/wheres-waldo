@@ -5,6 +5,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import uniqid from 'uniqid';
 import './App.css';
 import './toggleSwitch.css';
+import './leaderboard.css';
 import Header from './components/Header';
 import Home from './components/Home';
 import Level from './components/Level';
