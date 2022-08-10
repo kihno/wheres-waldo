@@ -55,11 +55,9 @@ function App() {
   const getID = () => {
     if (localStorage.getItem('sessionID') !== '') {
       setSessionID(localStorage.getItem('sessionID'));
-      console.log(sessionID);
     } else {
       setSessionID(uniqid());
       localStorage.setItem('sessionID', sessionID);
-      console.log(sessionID);
     }
   }
 
@@ -82,11 +80,12 @@ function App() {
   }
 
   const getLeaderBoard = async () => {
-    const querySnapsot = await getDocs(query(collection(db, 'leaderboard')));
-    querySnapsot.forEach((doc) => {
-      setLeaderboard(leaderboard => ({...leaderboard, ...doc.data()}));
+    const querySnapshot = await getDocs(query(collection(db, 'leaderboard')));
+    const updateBoard = {};
+    querySnapshot.forEach((doc) => {
+      updateBoard[doc.id] = doc.data();
     });
-    console.log(leaderboard);
+    setLeaderboard(updateBoard);
   }
 
   const startGame = (e) => {
@@ -201,7 +200,7 @@ function App() {
     if (checkbox === false) {
       for (let key in leaderboard.waldoMode) {
         if (entry.level.split(" ").join("") === key.toString().toLowerCase()) {
-          updateBoard.waldoMode.key.push(entry);
+          updateBoard.waldoMode[key].push(entry);
           setLeaderboard(updateBoard);
         }
       }
@@ -215,11 +214,11 @@ function App() {
       // updateBoard.waldoBoard.push(entry);
       // setLeaderboard(updateBoard);
 
-      await setDoc(doc(db, 'leaderboard', 'waldoMode'), leaderboard.waldoBoard);
+      await setDoc(doc(db, 'leaderboard', 'waldoMode'), leaderboard.waldoMode);
     } else {
       for (let key in leaderboard.challengeMode) {
         if (entry.level.split(" ").join("") === key.toString().toLowerCase()) {
-          updateBoard.challengeMode.key.push(entry);
+          updateBoard.challengeMode[key].push(entry);
           setLeaderboard(updateBoard);
         }
       }
@@ -233,22 +232,12 @@ function App() {
       // updateBoard.challengeBoard.push(entry);
       // setLeaderboard(updateBoard);
 
-      await setDoc(doc(db, 'leaderboard', 'challengeMode'), leaderboard.challengeBoard);
+      await setDoc(doc(db, 'leaderboard', 'challengeMode'), leaderboard.challengeMode);
     }
 
     setName('');
   }
 
-  const updateLeaderboard = async (mode) => {
-    try {
-      await setDoc(collection(db, 'leaderboard', mode), leaderboard);
-      console.log(leaderboard);
-    }
-    catch(error) {
-      console.error('Error updating leaderboard to Firebase Database', error);
-    }
-
- }
   return (
     <div className="App">
       <Header handleHomeClick={navigateHome} handleLeaderboardClick={navigateLeaderboard} />
