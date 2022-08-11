@@ -26,7 +26,7 @@ const Timer = (props) => {
     
     return(
         <div id="timer">
-            <div id="click">{clock.min}:{clock.sec}</div>
+            <div id="clock">{clock.min}:{clock.sec}</div>
         </div>
     )
 }

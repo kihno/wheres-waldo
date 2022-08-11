@@ -9,8 +9,10 @@ const Level = (props) => {
     
     return(
         <div id="gameContainer">
-            <Legend characters={characters} isFound={isFound} />
-            {gameOver ? gameTime.min + ":" + gameTime.sec : <Timer gameTime={gameTime} setGameTime={setGameTime} />}
+            <div id="info">
+                <Legend characters={characters} isFound={isFound} />
+                {gameOver ? gameTime.min + ":" + gameTime.sec : <Timer gameTime={gameTime} setGameTime={setGameTime} />}
+            </div>
             <div id="gameboard">
                 <div id="message" style={{display: messageHide}}>{message}</div>
                 <div id="endGame" className={gameOver ? null : "hide"}>
@@ -39,9 +41,12 @@ const Level = (props) => {
                 })}
                 <img id="gameImage" src={levelData.url} onClick={gameOver ? null : handleClick} alt={levelData.name}></img>
             </div>
-            <button id="backButton" onClick={handleHomeClick}>
-                <img src={back} alt="Back" className="backIcon"></img>
-            </button>
+            <div id="buttonContainer">
+                <button id="backButton" onClick={handleHomeClick}>
+                    <img src={back} alt="Back" className="backIcon"></img>
+                </button>
+            </div>
+            
         </div>
     )
 }

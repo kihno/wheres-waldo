@@ -1,7 +1,10 @@
 /* The switch - the box around the slider */
 .mode {
     cursor: pointer;
-    font-weight: bold;
+}
+
+.selected {
+  font-weight: bold;
 }
 
 .switch {

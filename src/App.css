@@ -1,14 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?&family=Roboto:wght@400;700&display=swap');
+
 body {
+  width: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Header */
+
+#header {
+  width: 100vw;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 5px solid #ED2724;
 }
 
 #logo {
   cursor: pointer;
+  height: 120px;
+  margin-left: 20px;
+}
+
+#links {
+  font-weight: bold;
+  font-size: 20px;
+  list-style: none;
+  display: flex;
+  gap: 40px;
+}
+
+.link {
+  cursor: pointer;
+}
+
+/* Home */
+
+#toggleMode {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+}
+
+#start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  width: 800px;
+  padding: 40px;
 }
 
 #grid {
   width: 800px;
   display: grid;
+  gap: 20px;
   grid: 1fr 1fr / 1fr 1fr;
 }
 
@@ -23,18 +81,44 @@ body {
   height: 100%;
   object-fit: cover;
   overflow: hidden;
+  border-radius: 20px;
 }
 
 .previewImg:hover {
   opacity: 0.5;
+  border: 3px solid #01AEF0;
+}
+
+/* Level */
+
+#info {
+  display: flex;
+  gap: 120px;
+  margin: 20px;
+}
+
+#legend {
+  display: flex;
+}
+
+.character {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#timer {
+  align-self: flex-end;
+  font-size: 60px;
 }
 
 #gameImage {
   height: 100%;
+  width: 100vw;
 }
 
 #gameContainer {
-  margin: 20px;
+ padding: 20px;
 }
 
 #gameboard {
@@ -111,15 +195,31 @@ body {
   background-color: lightgrey;
 }
 
+#buttonContainer {
+  height: 52px;
+  margin: 20px;
+}
+
 #backButton {
-  cursor: pointer;
   border: none;
   border-radius: 15px;
   background-color: #ED2724;
-  width: 70px;
-  height: 45px;
+  width: 75px;
+  height: 50px;
+}
+
+#backButton:hover {
+  cursor: pointer;
+  width: 77px;
+  height: 52px;
 }
 
 .backIcon {
   width: 50px;
+}
+
+#footer {
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
 }

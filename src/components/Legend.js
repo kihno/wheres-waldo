@@ -5,10 +5,9 @@ const Legend = (props) => {
 
     return(
         <div id="legend">
-            <h2>Legend</h2>
             {characters.map(char => {
                 return <div className="character" key={char.id}>
-                            <img className={isFound[char.name] ? "charImg found" : "charImg"} src={char.url}></img>
+                            <img className={isFound[char.name] ? "charImg found" : "charImg"} src={char.url} alt={char.name}></img>
                             <span className="charName">{char.name}</span>
                         </div>
             })}
