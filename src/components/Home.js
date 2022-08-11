@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Home = (props) => {
     const {levelData, handleClick, toggleMode, checkbox, waldoMode, challengeMode } = props;
+
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
 
     return(
         <div id="start">

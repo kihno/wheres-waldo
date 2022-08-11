@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Legend from './Legend';
 import Timer from './Timer';
 import target from '../images/target.png';
@@ -7,6 +7,10 @@ import back from '../images/back-icon.png';
 const Level = (props) => {
     const { levelData, handleClick, characters, gameTime, setGameTime, topY, leftX, handleSelect, message, selectHide, messageHide, isFound, gameOver, viewLeaderboard, returnHome, name, handleInput, handleHomeClick } = props;
     
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
+
     return(
         <div id="gameContainer">
             <div id="info">
@@ -20,10 +24,12 @@ const Level = (props) => {
                     <div className="endTime">{"Your Time: " + gameTime.min + ":" + gameTime.sec}</div>
                     <p>You made the leaderboard!</p>
                     <label className="timeInputLabel">Enter Your Name:
-                        <input type="text" value={name} onChange={handleInput}></input>
+                        <input className="timeInput" type="text" value={name} onChange={handleInput}></input>
                     </label>
-                    <button className="leaderboardButton" onClick={viewLeaderboard}>View Leaderboard</button>
-                    <button className="endButton" onClick={returnHome}>Keep Playing</button>
+                    <div id="endButtonContainer">
+                        <button className="leaderboardButton" onClick={viewLeaderboard}>View Leaderboard</button>
+                        <button className="endButton" onClick={returnHome}>Keep Playing</button>
+                    </div>
                 </div>
                 <div id="tag" style={{display: selectHide, top:topY, left:leftX}}>
                     <div id="targetBox"></div>
@@ -39,7 +45,7 @@ const Level = (props) => {
                     return <img className={isFound[char.name] ? "target " + char.name : "hide target " + char.name} src={target} alt="X" key={char.id}
                             style={{left: charX, top: charY,}}></img>
                 })}
-                <img id="gameImage" src={levelData.url} onClick={gameOver ? null : handleClick} alt={levelData.name}></img>
+                <img id="gameImage" className={gameOver ? "found" : null} src={levelData.url} onClick={gameOver ? null : handleClick} alt={levelData.name}></img>
             </div>
             <div id="buttonContainer">
                 <button id="backButton" onClick={handleHomeClick}>
