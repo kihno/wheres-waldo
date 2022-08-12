@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import db from './utils/firebase';
-import { getFirestore, collection, addDoc, getDoc, doc, getDocs, query, orderBy, setDoc, } from 'firebase/firestore';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { collection, doc, getDocs, query, orderBy, setDoc, } from 'firebase/firestore';
 import uniqid from 'uniqid';
 import './App.css';
 import './toggleSwitch.css';
-import './leaderboard.css';
 import Header from './components/Header';
 import Home from './components/Home';
 import Level from './components/Level';
@@ -30,8 +28,6 @@ function App() {
   const [name, setName] = useState('');
   const [leaderboard, setLeaderboard] = useState({});
   const [sessionID, setSessionID] = useState('');
-
-  const navigate = useNavigate();
 
   useEffect(() => {
       getCharacters('waldoMode');
@@ -106,7 +102,6 @@ function App() {
   }
   
   const navigateHome = () => {
-    // navigate('/');
     setView('home');
   }
 
@@ -199,41 +194,23 @@ function App() {
     let updateBoard = {...leaderboard};
 
     if (checkbox === false) {
-      for (let key in leaderboard.waldoMode) {
-        if (entry.level.split(" ").join("") === key.toString().toLowerCase()) {
-          updateBoard.waldoMode[key].push(entry);
+      for (let key in leaderboard['waldo-mode']) {
+        if (entry.level.split(" ").join("-") === key) {
+          updateBoard['waldo-mode'][key].push(entry);
           setLeaderboard(updateBoard);
         }
       }
-      // if (entry.level === leaderboard.waldoMode)
-      // updateBoard.waldoBoard.map(leader => {
-      //   if (leader.name === entry.name && !leader.name.includes(sessionID)) {
-      //     entry.name = entry.name + '-' + sessionID;
-      //   }
-      // });
 
-      // updateBoard.waldoBoard.push(entry);
-      // setLeaderboard(updateBoard);
-
-      await setDoc(doc(db, 'leaderboard', 'waldoMode'), leaderboard.waldoMode);
+      await setDoc(doc(db, 'leaderboard', 'waldo-mode'), leaderboard['waldo-mode']);
     } else {
-      for (let key in leaderboard.challengeMode) {
-        if (entry.level.split(" ").join("") === key.toString().toLowerCase()) {
-          updateBoard.challengeMode[key].push(entry);
+      for (let key in leaderboard['challenge-mode']) {
+        if (entry.level.split(" ").join("-") === key) {
+          updateBoard['challenge-mode'][key].push(entry);
           setLeaderboard(updateBoard);
         }
       }
 
-      // updateBoard.challengeBoard.map(leader => {
-      //   if (leader.name === entry.name && !leader.name.includes(sessionID)) {
-      //     entry.name = entry.name + '-' + sessionID;
-      //   }
-      // });
-
-      // updateBoard.challengeBoard.push(entry);
-      // setLeaderboard(updateBoard);
-
-      await setDoc(doc(db, 'leaderboard', 'challengeMode'), leaderboard.challengeMode);
+      await setDoc(doc(db, 'leaderboard', 'challenge-mode'), leaderboard['challenge-mode']);
     }
 
     setName('');
@@ -261,15 +238,6 @@ function App() {
             return <Home levelData={levelData}  handleClick={startGame} />
         }
       })()}
-
-      {/* <Routes>
-        <Route path='/'>
-          <Home levelData={levelData}  handleClick={startGame} />
-        </Route>
-        <Route path='/level'>
-          <Level />
-        </Route>
-      </Routes>*/}
 
       <Footer /> 
     </div>

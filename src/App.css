@@ -73,6 +73,9 @@ body {
 .imgContainer {
   width: 400px;
   height: 400px;
+  background-color: #01AEF0;
+  border: 3px solid #ffffff;
+  border-radius: 25px;
 }
 
 .previewImg {
@@ -84,9 +87,12 @@ body {
   border-radius: 20px;
 }
 
+.imgContainer:hover {
+  border: 3px solid #ED2724;
+}
+
 .previewImg:hover {
   opacity: 0.5;
-  border: 3px solid #01AEF0;
 }
 
 /* Level */
@@ -205,6 +211,12 @@ body {
   box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
 
+#backButton:active {
+  width: 74px;
+  height: 49px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0);
+}
+
 .backIcon {
   width: 50px;
 }
@@ -248,7 +260,42 @@ body {
   background-color: #01AEF0;
 }
 
-/* Footer */
+/* Leaderboard */
+
+#leaderboard {
+  text-transform: capitalize;
+  display: flex;
+  flex-direction: column;
+}
+
+#waldo-mode {
+  order: 1;
+
+}
+#challenge-mode {
+  order: 2;
+}
+
+.levels {
+  display: flex;
+  gap: 80px;
+}
+
+.level-one {
+  order: 1;
+}
+
+.level-two {
+  order: 2;
+}
+
+.level-three {
+  order: 3;
+}
+
+.level-four {
+  order: 4;
+}
 
 .leaderList {
   width: 235px;
@@ -256,11 +303,11 @@ body {
 }
 
 .entry {
-  margin: 10px;
+margin: 10px;
 }
 
 .hide {
-  display: none;
+display: none;
 }
 
 /* Footer */
