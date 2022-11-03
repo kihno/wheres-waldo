@@ -317,3 +317,45 @@ display: none;
   text-align: center;
   margin-top: auto;
 }
+
+@media screen and (max-width: 800px) {
+  #header {
+    width: 100%;
+  }
+
+  #logo {
+    height: 60px;
+  }
+
+  #links {
+    font-size: 16px;
+  }
+
+  #start {
+    width: calc(100% - 80px);
+  }
+
+  #grid {
+    grid: 1fr 1fr 1fr 1fr / 1fr;
+    justify-items: center;
+    width: 100%;
+  }
+
+  .imgContainer {
+    width: 100%;
+    height: auto;
+  }
+
+  .levels {
+    flex-direction: column;
+  }
+
+  .charImg {
+    width: 50px;
+    height: 50px;
+  }
+
+  #timer {
+    font-size: 20px;
+  }
+}
